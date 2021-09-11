@@ -6,6 +6,7 @@ function [Sum,cout]=blocksum(x,y,k,cin,en)
     %       param y     :   second sub input operand (in binary representation)
     %       param k     :   block size
     %       param cin   :   carry out of previous block
+    %       param en    :   block enable signal  
     %
     %       returns [sum,cout] vector containing sum and carry out
 
