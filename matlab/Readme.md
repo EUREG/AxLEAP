@@ -37,3 +37,5 @@ Use geterror function to generate errorstats and append to this file
 >>> geterror_upfadder(n, N, k, sel, wf)
 
 ```
+
+Else run the get stats script to autometically run geterror for all the configurations
