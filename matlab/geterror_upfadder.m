@@ -13,6 +13,8 @@ function geterror_upfadder(n,N,k,c,wf)
   er=0;
   ed = zeros(1,num);
   red = zeros(1,num);
+  
+  bitsum = zeros(1, 33);
 
   for i=1:num    
     a=randi(power(2,N)-1);
@@ -21,6 +23,8 @@ function geterror_upfadder(n,N,k,c,wf)
     A = upf_adder(a,b,N,k,c);   %  approximate calculation
     B = a+b;                    %  exact calculation
     
+    bitsum = de2bi(A, 33, 'left-msb') + bitsum;
+
     if(B~=A)
         er = er+1;
         ed(i) = abs(A-B);
@@ -31,6 +35,9 @@ function geterror_upfadder(n,N,k,c,wf)
       disp("Completed: " + num2str(i/(num/100))+" %");
     end
   end
+
+  %disp(bitsum);
+  %plot(bitsum);
   
   %------------- Report generation ---------------------------
   er = (100*er)/num;     % error rate
