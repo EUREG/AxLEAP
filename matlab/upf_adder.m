@@ -1,11 +1,11 @@
 function Sum = upf_adder(A,B,n,k,c)
-%   UPF Based RCA Adder
-%
-%   upf_adder(A, B, n, k);   
-%       A, B are operands
-%       n is architecture size
-%       k is block size
-%       c is the binary control signal array of size n/k
+    %   UPF Based RCA Adder
+    %
+    %   upf_adder(A, B, n, k);   
+    %       A, B are operands
+    %       n is architecture size
+    %       k is block size
+    %       c is the binary control signal array of size n/k
 
     n_blocks = n/k;
 

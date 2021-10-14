@@ -1,10 +1,10 @@
-function geterror_upfadder(n,N,k,c,wf)
+function geterror_upfadder(n,N,k,c,f)
   % ERROR STATS GENERATOR
   % 
   % @param n 10^n = no of cases
   % @param N bus length/architecture
   % @param k block size (min_val=2, max_value=N/2)
-  % @param wf write to file
+  % @param f write to specified file (leave blank to avoid writing to file) --> use single quoted string
   % Prints error stats
 
   num=power(10,n);
@@ -50,15 +50,15 @@ function geterror_upfadder(n,N,k,c,wf)
 
 
   for i=0:1
-    if i==1 && wf==false
+    if i==1 && length(f)==0
       break;
     end
 
     if i==0
       fid = 1;
     else
-      fid = fopen('reports.md', 'a+');  % open in append mode
-      disp('Writing to file : reports.md');
+      fid = fopen(f, 'a+');  % open in append mode
+      disp(['Appending report to file : ' f]);
     end
 
     % Write header
@@ -88,7 +88,7 @@ function geterror_upfadder(n,N,k,c,wf)
     fprintf(fid, '| MEP         | %g \n', MEP);
 
 
-    if wf==true && i==1
+    if length(f)~=0 && i==1
       fclose(fid);
       disp('Done');
     end
