@@ -39,6 +39,8 @@ getdumps:
 	@echo "Generating Matlab Dumps..."
 	cd $(matlab_dir) && make getdumps
 
+
+
 #################################################################################################
 #~	verify		:	verify verilog with matlab generated dumps
 .PHONY: verify
