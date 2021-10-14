@@ -16,7 +16,7 @@ clean:
 	rm -f $(report_file)
 
 .PHONY: geterror
-geterror: 
+geterror:
 	@echo "Generating Report..."
 	
 	rm -f $(report_file)
@@ -26,6 +26,6 @@ geterror:
 
 
 .PHONY: getdumps
-getdumps: 
+getdumps:
 	@echo "Generating Dumps..."
 	$(call runMatlabCommand,"get_all_dumps($(N_CASES), '$(dump_dir)')")

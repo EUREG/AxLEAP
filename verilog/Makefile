@@ -13,6 +13,7 @@ clean:
 	rm -rf $(trace_dir)/*
 	rm -rf $(temp_dir)/*
 
+
 .PHONY: verify
 verify:
 	python3 verify.py $(CASES) 32 4 1110 $(dump_dir) $(trace_dir) $(ENABLE_TRACE) $(temp_dir)
