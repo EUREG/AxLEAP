@@ -28,9 +28,9 @@ def verifyConfiguration(CASES:int, N:int, K:int, C:str, dump_dir:str, trace_dir:
     command += ['-DBLOCKSIZE='+str(K)]
     
     if enable_trace:
-        command+=['-DTRACE='+trace_file]
+        command+=['-DTRACEFILE='+trace_file]
     
-    command += ['-DCONFIG='+C]
+    command += ['-DCONFIG='+str(int((N/2)/K))+"'b"+C]
     command += ['-DFILEA='+fileA]
     command += ['-DFILEB='+fileB]
     command += ['-DFILEC='+fileC]

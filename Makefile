@@ -3,7 +3,7 @@ matlab_dir = $(realpath matlab)
 verilog_dir = $(realpath verilog)
 
 # Default Target
-default: clean report-error getdumps trace
+default:
 
 #################################################################################################
 #~	help		:	Show help message

@@ -24,24 +24,25 @@ module upfadder#
 
     /////////////////////////////////////////////
     // Lower Half  
+    initial $display("%b", C);
 
     genvar i;
 
     generate 
         for(i=0; i<M; i=i+1) begin: AxBlocks
-            if(C[i] == 1'b1) begin
-                rca_block#(.n(M)) ApxBlock
+            if(C[i] == 1) begin
+                rca_block#(.n(K)) ApxBlock
                 (
-                    .a_i    (a_i[M*(i+1)-1:i*M]),
-                    .b_i    (b_i[M*(i+1)-1:i*M]),
+                    .a_i    (a_i[K*(i+1)-1:i*K]),
+                    .b_i    (b_i[K*(i+1)-1:i*K]),
                     .c_i    (carry[i]), 
-                    .s_o    (s_o[M*(i+1)-1:i*M]),
+                    .s_o    (s_o[K*(i+1)-1:i*K]),
                     .c_o    (carry[i+1])
                 );
             end
             else begin
-                assign s_o[i] = 1'b0;
-                assign carry[i] = 1'b0;
+                assign s_o[K*(i+1)-1:i*K] = 0;
+                assign carry[i+1] = 1'b0;
             end
         end
     endgenerate
@@ -53,7 +54,7 @@ module upfadder#
     (
         .a_i    (a_i[N-1:N/2]),
         .b_i    (b_i[N-1:N/2]),
-        .c_i    (carry[M-1]), 
+        .c_i    (carry[M]), 
         .s_o    (s_o[N-1:N/2]),
         .c_o    (c_o)
     );

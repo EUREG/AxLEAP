@@ -28,9 +28,9 @@ module upfadder_tb;
 
 
     initial begin
-        `ifdef VCDFILE
-            $dumpfile(`VCDFILE);
-            $dumpvars(1,upfadder_tb);
+        `ifdef TRACEFILE
+            $dumpfile(`TRACEFILE);
+            $dumpvars(0,adder);
         `endif
 
         #10;
@@ -38,7 +38,7 @@ module upfadder_tb;
         for(i=1; i<=n; i++)begin
             a= areg[i]; b=breg[i]; #1;        
             if({cout,sum} != ans[i])
-                $display("!ERROR:%d ; %d*%d = {Expected: %d;  Got: %d};",i,areg[i], breg[i], ans[i], {cout,sum}); 
+                $display("!ERROR:%d ; %d + %d = {Expected: %b;  Got: %b};",i,areg[i], breg[i], ans[i], {cout,sum}); 
             //$display("%d", i);    
         end
         $display("%d cases checked; all good..",n);       
