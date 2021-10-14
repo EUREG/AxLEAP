@@ -4,6 +4,7 @@ verilog_dir = $(realpath verilog)
 
 # Default Target
 default:
+all: clean report-error getdumps trace
 
 #################################################################################################
 #~	help		:	Show help message
