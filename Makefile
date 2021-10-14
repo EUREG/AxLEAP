@@ -32,12 +32,12 @@ report-error:
 
 
 #################################################################################################
-#~	gendumps	:	generate matlab dumps
+#~	getdumps	:	generate matlab dumps
 
-.PHONY: gendumps
-gendumps:
+.PHONY: getdumps
+getdumps:
 	@echo "Generating Matlab Dumps..."
-	cd $(matlab_dir) && make gendumps
+	cd $(matlab_dir) && make getdumps
 
 #################################################################################################
 #~	verify		:	verify verilog with matlab generated dumps

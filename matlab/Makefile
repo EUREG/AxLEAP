@@ -25,7 +25,7 @@ geterror:
 	$(call runMatlabCommand,"get_all_stats($(N_CASES), '$(report_file)')")
 
 
-.PHONY: gendumps
-gendumps: 
+.PHONY: getdumps
+getdumps: 
 	@echo "Generating Dumps..."
 	$(call runMatlabCommand,"get_all_dumps($(N_CASES), '$(dump_dir)')")
