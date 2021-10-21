@@ -14,9 +14,9 @@ function [] = gendump(n, N, K, C, directory)
     fprintf("]\n\n");
 
 
-    filea = fopen(string(directory)+"/rand"+num2str(N)+"_"+num2str(K)+"_"+strjoin(string(C), "")+"_a.txt", "w");
-    fileb = fopen(string(directory)+"/rand"+num2str(N)+"_"+num2str(K)+"_"+strjoin(string(C), "")+"_b.txt", "w");
-    file =  fopen(string(directory)+"/mat" +num2str(N)+"_"+num2str(K)+"_"+strjoin(string(C), "")+".txt", "w");
+    filea = fopen(string(directory)+"/num"+num2str(N)+"_"+num2str(K)+"_"+strjoin(string(C), "")+"_a.txt", "w");
+    fileb = fopen(string(directory)+"/num"+num2str(N)+"_"+num2str(K)+"_"+strjoin(string(C), "")+"_b.txt", "w");
+    file =  fopen(string(directory)+"/res" +num2str(N)+"_"+num2str(K)+"_"+strjoin(string(C), "")+".txt", "w");
 
     for i=1:n
         a=randi([0,power(2,N)-1]);

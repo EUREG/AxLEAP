@@ -2,6 +2,10 @@ import sys
 import subprocess
 
 def ExecuteCommand(cmd:list, mute:bool):
+    print('Executing: ', end='')
+    for x in cmd:
+        print(x, end=' ')
+    print()
     dump = subprocess.run(
         cmd , capture_output=True, text=True
     )
@@ -9,18 +13,18 @@ def ExecuteCommand(cmd:list, mute:bool):
         print('stdout: ' + dump.stdout)
     if len(dump.stderr) != 0:
         print('stderr: '+ dump.stderr)
+    return dump
 
 def appendFileTag(filename:str, N:int, K:int, C:str) -> str:
     filename+=str(N)+'_'+str(K)+'_'+('1'*int((N/K)/2))+C
     return filename
 
-def verifyConfiguration(CASES:int, N:int, K:int, C:str, dump_dir:str, trace_dir:str, enable_trace:bool, temp_dir:str):
-    fileA = appendFileTag('"'+dump_dir+'/rand', N, K, C)+'_a.txt"'
-    fileB = appendFileTag('"'+dump_dir+'/rand', N, K, C)+'_b.txt"'
-    fileC = appendFileTag('"'+dump_dir+'/mat', N, K, C)+'.txt"'
+def verifyConfiguration(CASES:int, N:int, K:int, C:str, dump_dir:str, trace_file:str, enable_trace:bool, temp_dir:str, name_prefix:str):
+    fileA = appendFileTag('"'+dump_dir+'/num_'+name_prefix+'_', N, K, C)+'_a.txt"'
+    fileB = appendFileTag('"'+dump_dir+'/num_'+name_prefix+'_', N, K, C)+'_b.txt"'
+    fileC = appendFileTag('"'+dump_dir+'/res_'+name_prefix+'_', N, K, C)+'.txt"'
 
-    trace_file = appendFileTag('"'+trace_dir+'/trace', N, K, C)+'.vcd"'
-    vvpfile = appendFileTag(temp_dir+'/verify', N, K, C)+'.vvp'   
+    vvpfile = appendFileTag(temp_dir+'/verify_'+name_prefix+'_', N, K, C)+'.vvp'   
 
     command = ['iverilog', '-o', vvpfile, 'upfadder_tb.v']
     command += ['-DCASES='+str(CASES)]
@@ -70,7 +74,10 @@ if __name__ == "__main__":
         ET = bool(sys.argv[7])
         TEDir = sys.argv[8]
 
-        verifyConfiguration(n, N, K, C, DDir, TDir, ET, TEDir)
         vvpfile = appendFileTag(TEDir+'/verify', N, K, C)+'.vvp'
+        trace_file = appendFileTag('"'+TDir+'/trace', N, K, C)+'.vcd"'
+        
+        verifyConfiguration(n, N, K, C, DDir, trace_file, ET, TEDir, '')
+        
 
         ExecuteCommand(['vvp', vvpfile], False)
