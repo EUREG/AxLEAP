@@ -1,54 +1,107 @@
-trace_dir = $(realpath trace)
-temp_dir = $(realpath temp)
-dump_dir = $(realpath ../matlab/dump)
+#! Usage: make DESIGN=<Design> [CONFIG=<config>] [Target]
+#!
 
-application_dump_dir = $(realpath input)
+#! Designs:
+#!	aca_csu/bcsa/rapcla/proposed
+#!
+DESIGN = NONE
 
-CASES = 100000
-ENABLE_TRACE = False
+CONFIG = NONE
 
-default:
+ARCH = 32_4
+
+DESIGN_DIR = $(realpath designs/$(DESIGN))
+SPLIT_DIR = $(DESIGN_DIR)/split
+VVP_DIR = $(DESIGN_DIR)/vvp
+VCD_DIR = $(DESIGN_DIR)/vcd
+
+################################################
+# Bash color codes
+COLOR_RED 		= \033[0;31m
+COLOR_GREEN 	= \033[0;32m
+COLOR_YELLOW 	= \033[0;33m
+COLOR_NC 		= \033[0m
+COLOR_BLACK		= \033[0;30m
+
+################################################
+
+default: help
+#! Config:
+#!	mask specification required only in case of proposed design
+#!
 
 
-.PHONY: clean
-clean:
-	rm -rf $(trace_dir)/*
-	rm -rf $(temp_dir)/*
+#! Targets:
+#!
+
+# -------------------- help ---------------------
+#!	help		:	print help message
+.PHONY: help
+help: Makefile	
+	@sed -n 's/^#!//p' $<
 
 
+
+#!
+# ------------------ verify ---------------------
+#!	verify		:	Verify Verilog implementation
 .PHONY: verify
 verify:
-	python3 verify.py $(CASES) 32 4 1110 $(dump_dir) $(trace_dir) $(ENABLE_TRACE) $(temp_dir)
-	python3 verify.py $(CASES) 32 4 1100 $(dump_dir) $(trace_dir) $(ENABLE_TRACE) $(temp_dir)
-	python3 verify.py $(CASES) 32 4 1000 $(dump_dir) $(trace_dir) $(ENABLE_TRACE) $(temp_dir)
-	python3 verify.py $(CASES) 32 4 0000 $(dump_dir) $(trace_dir) $(ENABLE_TRACE) $(temp_dir)
+	@echo "$(COLOR_GREEN) $(DESIGN) : $(ARCH) : $(CONFIG) : $(COLOR_YELLOW) Verifying Verilog Implementation...  $(COLOR_NC)"
+	cp ../matlab/dump/* $(DESIGN_DIR)/split/
 
-	python3 verify.py $(CASES) 32 8 10 $(dump_dir) $(trace_dir) $(ENABLE_TRACE) $(temp_dir)
-	python3 verify.py $(CASES) 32 8 00 $(dump_dir) $(trace_dir) $(ENABLE_TRACE) $(temp_dir)
-
-	python3 verify.py $(CASES) 32 16 0 $(dump_dir) $(trace_dir) $(ENABLE_TRACE) $(temp_dir)
+	./Verify.py $(DESIGN) verify $(ARCH) $(CONFIG)
+	@echo "$(COLOR_GREEN) Done! $(COLOR_NC)"
 
 
-.PHONY: gen-application-trace
-gen-application-trace:
-	#python3 verify_application.py 32 4 1110 $(application_dump_dir) $(trace_dir) $(ENABLE_TRACE) $(temp_dir) aerial
-	#python3 verify_application.py 32 4 1100 $(application_dump_dir) $(trace_dir) $(ENABLE_TRACE) $(temp_dir) aerial
-	#python3 verify_application.py 32 4 1000 $(application_dump_dir) $(trace_dir) $(ENABLE_TRACE) $(temp_dir) aerial
-	#python3 verify_application.py 32 4 0000 $(application_dump_dir) $(trace_dir) $(ENABLE_TRACE) $(temp_dir) aerial
 
-	python3 verify_application.py 32 4 1110 $(application_dump_dir) $(trace_dir) $(ENABLE_TRACE) $(temp_dir) chem
-	python3 verify_application.py 32 4 1100 $(application_dump_dir) $(trace_dir) $(ENABLE_TRACE) $(temp_dir) chem
-	python3 verify_application.py 32 4 1000 $(application_dump_dir) $(trace_dir) $(ENABLE_TRACE) $(temp_dir) chem
-	python3 verify_application.py 32 4 0000 $(application_dump_dir) $(trace_dir) $(ENABLE_TRACE) $(temp_dir) chem
+#!
+# ------------------ gen_vcd ---------------------
+#!	gen_vcd		:	Generate application VCD traces
+.PHONY: gen_vcd
+gen_vcd:
+
+	@echo "$(COLOR_GREEN) $(DESIGN) : $(CONFIG) : $(COLOR_YELLOW) Generating VCD Traces...  $(COLOR_NC)"
+
+	@echo "$(COLOR_YELLOW)--- aerial --- $(COLOR_NC)"
+	./genVCD.py $(DESIGN) aerial $(CONFIG)
+	@echo "$(COLOR_GREEN) Done! $(COLOR_NC)"
+	
+	@echo "$(COLOR_YELLOW)--- chem --- $(COLOR_NC)"
+	./genVCD.py $(DESIGN) chem $(CONFIG)
+	@echo "$(COLOR_GREEN) Done! $(COLOR_NC)"
+
+	@echo "$(COLOR_YELLOW)--- lena --- $(COLOR_NC)"
+	./genVCD.py $(DESIGN) lena $(CONFIG)
+	@echo "$(COLOR_GREEN) Done! $(COLOR_NC)"
+
+	@echo "$(COLOR_YELLOW)--- moon --- $(COLOR_NC)"
+	./genVCD.py $(DESIGN) moon $(CONFIG)
+	@echo "$(COLOR_GREEN) Done! $(COLOR_NC)"
+	
 
 
-	python3 verify_application.py 32 4 1110 $(application_dump_dir) $(trace_dir) $(ENABLE_TRACE) $(temp_dir) lena
-	python3 verify_application.py 32 4 1100 $(application_dump_dir) $(trace_dir) $(ENABLE_TRACE) $(temp_dir) lena
-	python3 verify_application.py 32 4 1000 $(application_dump_dir) $(trace_dir) $(ENABLE_TRACE) $(temp_dir) lena
-	python3 verify_application.py 32 4 0000 $(application_dump_dir) $(trace_dir) $(ENABLE_TRACE) $(temp_dir) lena
 
 
-	python3 verify_application.py 32 4 1110 $(application_dump_dir) $(trace_dir) $(ENABLE_TRACE) $(temp_dir) moon
-	python3 verify_application.py 32 4 1100 $(application_dump_dir) $(trace_dir) $(ENABLE_TRACE) $(temp_dir) moon
-	python3 verify_application.py 32 4 1000 $(application_dump_dir) $(trace_dir) $(ENABLE_TRACE) $(temp_dir) moon
-	python3 verify_application.py 32 4 0000 $(application_dump_dir) $(trace_dir) $(ENABLE_TRACE) $(temp_dir) moon
+#!
+# ------------------- clean ---------------------
+.PHONY: clean
+clean: clean_split clean_vcd_dir clean_vvp_dir
+	
+#!	clean_split_dir	:	Clean split directory of the DESIGN
+.PHONY clean_split_dir:
+clean_split:
+	@echo "Cleaning Split Directory.."
+	rm -rf $(SPLIT_DIR)/*
+
+#!	clean_vvp_dir	:	Clean vvp directory of the DESIGN
+.PHONY clean_vvp_dir:
+clean_vvp_dir:
+	@echo "Cleaning vvp Directory.."
+	rm -rf $(VVP_DIR)/*
+
+#!	clean_vcd_dir	:	Clean vcd directory of the DESIGN
+.PHONY clean_vcd_dir:
+clean_vcd_dir:
+	@echo "Cleaning vcd Directory.."
+	rm -rf $(VCD_DIR)/*

@@ -31,10 +31,12 @@ Run `make help` to print out all the functionalities provided by any of the make
 2. MATLAB (preferably R2018b).
 3. icarus verilog (preferably )
 
+
 ## Getting Started
 ### Clone the repo
 ```bash
 $ git clone <repository-url>
+
 ```
 ### Generating Error Merices for *AxL-Add*
 ```bash
@@ -42,11 +44,24 @@ $ cd matlab
 $ make clean        # clean any existing reports
 $ make geterror     # generate error report
 ```
-
 Error Report will be saved in `matlab/Readme.md` for all configurations.
+
 
 ### Verifying Verilog Implementation with MATLAB code
 ```bash
-$ cd verilog
+$ cd matlab
+$ make getdumps     # generate dumpfiles using MAATLAB
+$ cd ../verilog
 $ make verify       # Verify verilog implementation with MATLAB code
+```
+
+
+### Generating Application Traces
+To be added by @kaustav
+
+
+### Generating Applicatioon VCD
+```bash
+$ cd verilog
+$ make ...
 ```

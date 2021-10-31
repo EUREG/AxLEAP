@@ -1,0 +1,4 @@
+DESIGN_INPUT_DIR = $(realpath input)
+DESIGN_SPLIT_DIR = $(realpath split)
+DESIGN_VVP_DIR = $(realpath vvp)
+DESIGN_VCD_DIR = $(realpath vcd)
