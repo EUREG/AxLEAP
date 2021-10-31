@@ -63,5 +63,7 @@ To be added by @kaustav
 ### Generating Applicatioon VCD
 ```bash
 $ cd verilog
-$ make ...
+$ ./generate_all_vcd.sh
 ```
+
+This will generate VCD files in `vcd` folder of respective designs.
