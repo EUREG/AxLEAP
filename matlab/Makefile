@@ -1,5 +1,8 @@
+#! Usage: make <Target>
+#!
 dump_dir = $(realpath dump)
-report_file = $(realpath .)/report.md
+report_dir = $(realpath report)
+report_file = $(report_dir)/report.md
 
 N_CASES = 5
 
@@ -8,13 +11,24 @@ define runMatlabCommand
 	matlab -nodisplay -nosplash -batch $1
 endef
 
-default: 
+default: geterror getdumps
+#! Targets:
+# -------------------- help ---------------------
+#!	help		:	print help message
+.PHONY: help
+help: Makefile	
+	@sed -n 's/^#!//p' $<
 
+
+# ------------------ clean ---------------------
+#!	clean		:	Clean any existing reports
 .PHONY: clean
 clean: 
 	rm -rf $(dump_dir)/*
-	rm -f $(report_file)
+	rm -rf $(report_dir)/*
 
+# ------------------ geterror ---------------------
+#!	geterror	:	Generate error reports
 .PHONY: geterror
 geterror:
 	@echo "Generating Report..."
@@ -24,7 +38,8 @@ geterror:
 
 	$(call runMatlabCommand,"get_all_stats($(N_CASES), '$(report_file)')")
 
-
+# ------------------ getdumps ---------------------
+#!	getdumps	:	Generate MATLAB dumps for verification of Verilog Implementation
 .PHONY: getdumps
 getdumps:
 	@echo "Generating Dumps..."

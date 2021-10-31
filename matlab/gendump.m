@@ -18,6 +18,7 @@ function [] = gendump(n, N, K, C, directory)
     fileb = fopen(string(directory)+"/num"+num2str(N)+"_"+num2str(K)+"_"+strjoin(string(C), "")+"_b.txt", "w");
     file =  fopen(string(directory)+"/res" +num2str(N)+"_"+num2str(K)+"_"+strjoin(string(C), "")+".txt", "w");
 
+    textprogressbar('calculating outputs: '); 
     for i=1:n
         a=randi([0,power(2,N)-1]);
         b=randi([0,power(2,N)-1]);
@@ -28,10 +29,10 @@ function [] = gendump(n, N, K, C, directory)
         fprintf(file, "%s\n",dec2hex(ans));
         
         if(mod(i,n/100*10)==0)
-            disp("writing files : "+num2str(i/(n/100))+"%");
+            textprogressbar(i/(n/100));
         end                    
     end
 
     fclose(filea);fclose(fileb);fclose(file);
-    disp("Done!")
+    textprogressbar(' done!'); 
 end

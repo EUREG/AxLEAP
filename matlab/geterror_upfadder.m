@@ -16,6 +16,7 @@ function geterror_upfadder(n,N,k,c,f)
   
   bitsum = zeros(1, 33);
 
+  textprogressbar('calculating outputs: '); 
   for i=1:num    
     a=randi(power(2,N)-1);
     b=randi(power(2,N)-1);
@@ -32,9 +33,11 @@ function geterror_upfadder(n,N,k,c,f)
     end
 
     if(mod(i,num/100*10)==0)
-      disp("Completed: " + num2str(i/(num/100))+" %");
+      textprogressbar(i/(num/100));
     end
   end
+  textprogressbar(' Done!');
+
 
   %disp(bitsum);
   %plot(bitsum);
