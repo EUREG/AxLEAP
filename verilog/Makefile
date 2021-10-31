@@ -50,8 +50,7 @@ verify:
 	@echo "$(COLOR_GREEN) $(DESIGN) : $(ARCH) : $(CONFIG) : $(COLOR_YELLOW) Verifying Verilog Implementation...  $(COLOR_NC)"
 	cp ../matlab/dump/* $(DESIGN_DIR)/split/
 
-	./Verify.py $(DESIGN) verify $(ARCH) $(CONFIG)
-	@echo "$(COLOR_GREEN) Done! $(COLOR_NC)"
+	@echo "$(COLOR_GREEN) To be automated soon... $(COLOR_NC)"
 
 
 
